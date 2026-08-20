@@ -1,0 +1,18 @@
+{
+  "name": "acme-monorepo-example",
+  "private": true,
+  "description": "Fictional root package.json showing the repo shape ci.yml expects: a pnpm workspace with an app called 'web' and a database package called '@acme/db'.",
+  "packageManager": "pnpm@11.14.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
