@@ -21,7 +21,7 @@ Output: the full adapted `ci.yml`, then a short list of every change and why, th
 
 My template `ci.yml`:
 
-[paste .github/workflows/ci.yml]
+[paste templates/ci.yml]
 
 My root `package.json`:
 

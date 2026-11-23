@@ -1,6 +1,6 @@
 # Minimal fictional pnpm-workspace.yaml showing the repo shape this
 # workflow expects. Not a real project — just enough structure for the
-# `--filter` selectors in ci.yml (`@acme/db`, `web`) to resolve to
+# `--filter` selectors in templates/ci.yml (`@acme/db`, `web`) to resolve to
 # something.
 
 packages:

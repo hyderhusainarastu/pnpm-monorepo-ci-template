@@ -4,7 +4,7 @@ A GitHub Actions workflow template for pnpm workspaces, with the reasoning behin
 
 ## Using this in your project
 
-- Copy `.github/workflows/ci.yml` into the target repo and keep the step order: `pnpm/action-setup` must run before `actions/setup-node` with `cache: "pnpm"`.
+- Copy `templates/ci.yml` into the target repo as `.github/workflows/ci.yml` and keep the step order: `pnpm/action-setup` must run before `actions/setup-node` with `cache: "pnpm"`.
 - Rename `@acme/db` and `web` to the real workspace package names. Check them against `pnpm-workspace.yaml`.
 - Copy `examples/.node-version` to the repo root, or change `node-version-file` in the workflow.
 - Set the pinned pnpm version (`version:` in `pnpm/action-setup`) to match `packageManager` in the root `package.json`.

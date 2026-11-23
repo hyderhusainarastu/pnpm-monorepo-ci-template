@@ -27,7 +27,7 @@ This template is a working `ci.yml` with those three problems already solved, pl
 
 ## Quick start
 
-1. Copy `.github/workflows/ci.yml` into your repo.
+1. Copy `templates/ci.yml` to `.github/workflows/ci.yml` in your repo. (This repo's own `.github/workflows/ci.yml` is only a self-check of the template, not the template itself.)
 2. Rename `@acme/db` and `web` to match your actual workspace package names (see `examples/pnpm-workspace.yaml` and `examples/package.json` for the expected shape).
 3. Adjust the Playwright spec list on the last step to your own CI-safe specs, or delete that step entirely if you don't have Playwright wired up yet.
 4. Replace the placeholder secrets (see [Secrets](#secrets-are-placeholders) below) with whatever your app actually needs.
@@ -74,7 +74,7 @@ steps:
   - run: pnpm install --frozen-lockfile
 ```
 
-`ci.yml` in this repo has this correct order with a comment explaining why, so it doesn't get "cleaned up" back into the broken order by someone who doesn't know the reason.
+`templates/ci.yml` in this repo has this correct order with a comment explaining why, so it doesn't get "cleaned up" back into the broken order by someone who doesn't know the reason.
 
 </details>
 
