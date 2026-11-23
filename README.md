@@ -1,8 +1,17 @@
 # pnpm Monorepo CI Template
 
+- A ready-to-copy `ci.yml` for pnpm workspaces: install, migrate, lint, typecheck, test, build and Playwright E2E.
+- Solves three common traps: `pnpm/action-setup` ordering for caching, a pgvector Postgres service container, and a CI-safe versus manual E2E split.
+- Works by hand or with any AI assistant: paste `PROMPT.md` into ChatGPT, Claude, Gemini or a coding agent to adapt it to your repo.
+
+**Works with:** GitHub Actions. For adapting the file: ChatGPT, Claude Code, Codex, Cursor, Gemini (see `PROMPT.md` and `AGENTS.md`).
+
 A GitHub Actions workflow for a **pnpm workspaces** monorepo (Next.js-style web app + shared packages, no build-system layer like Turborepo or Nx) that runs install, migrations, lint, typecheck, unit tests, build, and a Playwright E2E pass against a real Postgres + pgvector service container — plus documentation for three things that are easy to get wrong the first time you wire this up.
 
 This is a plain pnpm workspace setup. If your repo uses Turborepo or Nx, you'll want their caching/task-graph steps too — this template deliberately doesn't include any, so it's a clean starting point for a workspace that doesn't use one.
+
+<details>
+<summary>Problem: three pnpm-monorepo footguns</summary>
 
 ## Problem
 
@@ -14,12 +23,20 @@ Copying a CI workflow from a tutorial or another repo usually gets you 80% of th
 
 This template is a working `ci.yml` with those three problems already solved, plus the reasoning written down so the next person (including future-you) doesn't have to rediscover it.
 
+</details>
+
 ## Quick start
 
 1. Copy `.github/workflows/ci.yml` into your repo.
 2. Rename `@acme/db` and `web` to match your actual workspace package names (see `examples/pnpm-workspace.yaml` and `examples/package.json` for the expected shape).
 3. Adjust the Playwright spec list on the last step to your own CI-safe specs, or delete that step entirely if you don't have Playwright wired up yet.
 4. Replace the placeholder secrets (see [Secrets](#secrets-are-placeholders) below) with whatever your app actually needs.
+5. Copy `examples/.node-version` to your repo root (the workflow reads `.node-version`), or change `node-version-file`.
+6. **Bump the pinned pnpm version.** `ci.yml` pins `pnpm/action-setup` to `11.14.0`, and `examples/package.json` shows the matching `packageManager` field. Set both to the pnpm version you actually use, and keep them in sync.
+7. Want an assistant to do the adapting? Paste [`PROMPT.md`](PROMPT.md) and your files into it.
+
+<details>
+<summary>Before / after: the job-ordering trap</summary>
 
 ### Before / after: the job-ordering trap
 
@@ -58,6 +75,11 @@ steps:
 ```
 
 `ci.yml` in this repo has this correct order with a comment explaining why, so it doesn't get "cleaned up" back into the broken order by someone who doesn't know the reason.
+
+</details>
+
+<details>
+<summary>What is in <code>ci.yml</code>, section by section</summary>
 
 ## What's in `ci.yml`, section by section
 
@@ -108,6 +130,8 @@ That's a deliberate trade-off, not an oversight:
 
 If your app has no background worker and no live third-party dependencies, you may not need this split at all — just run your whole suite in CI. The split earns its complexity only once some of your E2E coverage genuinely can't run in a CI runner.
 
+</details>
+
 ## Secrets are placeholders
 
 Every `env:` value in `ci.yml` — `AUTH_SECRET`, the `STORAGE_*` values, the Postgres credentials — is a **CI-only placeholder**, not a real secret. They exist so the app can boot and construct its clients (auth, storage, database) inside the CI job without needing your real infrastructure credentials. None of them point at a real service; the storage URL, for instance, points at `localhost:54321`, which nothing in this job is actually listening on. Swap in your own env var names and, for anything CI genuinely needs to hit for real, use encrypted GitHub Actions secrets (`${{ secrets.YOUR_SECRET }}`) instead of a literal value in the workflow file.
@@ -119,3 +143,18 @@ Every `env:` value in `ci.yml` — `AUTH_SECRET`, the `STORAGE_*` values, the Po
 - The Playwright spec list, the migration command, and the `--filter` package names are all illustrative. You will need to edit them to match your actual repo before this workflow does anything useful.
 - The "CI-safe vs. manual" E2E split assumes you're disciplined about actually running the manual suite somewhere. Nothing enforces that outside of process — this template doesn't include, say, a separate scheduled workflow for the manual suite (though adding one is a reasonable next step if you adopt this pattern).
 - No caching strategy is included beyond `setup-node`'s built-in pnpm store cache. If your build step is slow, you'll likely want to add build-output caching on top of this.
+
+## Related
+
+- [incident-runbook-template](https://github.com/hyderhusainarastu/incident-runbook-template)
+- [project-memory-file-scaffold](https://github.com/hyderhusainarastu/project-memory-file-scaffold)
+- [pre-publication-review-gate-checklist](https://github.com/hyderhusainarastu/pre-publication-review-gate-checklist)
+- [cross-session-agent-handoff-prompt-template](https://github.com/hyderhusainarastu/cross-session-agent-handoff-prompt-template)
+
+## Keywords
+
+github actions, pnpm workspace, monorepo, ci, pgvector, postgres service container, playwright, e2e, caching
+
+---
+
+Part of palimnote-templates - more at https://github.com/hyderhusainarastu
